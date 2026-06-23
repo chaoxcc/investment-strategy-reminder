@@ -8,6 +8,20 @@ on:
     - cron: '0 20 * * 0'
   # 允许手动触发
   workflow_dispatch:
+    inputs:
+      simulate:
+        description: '模拟触发模式（可选：a_add, a_sell, us_sell, us_backfill_1, us_backfill_2, none）'
+        required: false
+        default: ''
+        type: choice
+        options:
+        - ''
+        - 'a_add'
+        - 'a_sell'
+        - 'us_sell'
+        - 'us_backfill_1'
+        - 'us_backfill_2'
+        - 'none'
 
 jobs:
   run-strategy:
@@ -29,6 +43,7 @@ jobs:
 
     - name: Create environment file
       run: |
+        mkdir -p data
         echo "EMAIL_SENDER=${{ secrets.EMAIL_SENDER }}" > .env
         echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> .env
         echo "EMAIL_RECEIVER=${{ secrets.EMAIL_RECEIVER }}" >> .env
@@ -37,7 +52,12 @@ jobs:
         echo "EMAIL_DRY_RUN=0" >> .env
 
     - name: Run strategy
-      run: python main.py
+      run: |
+        if [ -z "${{ inputs.simulate }}" ]; then
+          python main.py
+        else
+          python main.py --simulate ${{ inputs.simulate }}
+        fi
 
     - name: Save operation history
       uses: actions/upload-artifact@v4
