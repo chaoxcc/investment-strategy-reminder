@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       simulate:
-        description: '模拟触发模式（可选：a_add, a_sell, us_sell, us_backfill_1, us_backfill_2, none）'
+        description: '模拟触发模式（可选：a_add, a_sell, us_sell, us_backfill_1, us_backfill_2, none, full）'
         required: false
         default: ''
         type: choice
@@ -22,6 +22,7 @@ on:
         - 'us_backfill_1'
         - 'us_backfill_2'
         - 'none'
+        - 'full'
 
 jobs:
   run-strategy:
