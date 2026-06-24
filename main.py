@@ -36,7 +36,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    print(f'开始执行投资策略检查 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}')
+    print(f"开始执行投资策略检查 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     if args.simulate:
         triggers = get_simulated_triggers(args.simulate)
@@ -68,7 +68,7 @@ def main():
             save_us_redemption_status(status)
     
     email_content = build_email_content(triggers)
-    subject = f'【投资策略提醒】{datetime.now().strftime('%Y-%m-%d')}'
+    subject = f"【投资策略提醒】{datetime.now().strftime('%Y-%m-%d')}"
     send_email(subject, email_content)
     print('检查完成')
 
